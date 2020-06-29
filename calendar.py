@@ -1,7 +1,7 @@
 from __future__ import print_function
 from datetime import datetime
-import sys
 import pytz
+import argparse
 
 months_dict = {1:'January',2: 'February',3:'March',4:'April',5: 'May',6: 'June',
  			  7:'July', 8:'August',9:'September',10: 'October', 11:'November',12: 'December'}
@@ -98,14 +98,46 @@ class bcolors:
 	END     = '\033[0m'
 
 
+def get_changed_month(change_month,current_month,current_year):
 
-def main():
+	latest_month = change_month+current_month
+
+	if ( latest_month==0):
+		return 12, current_year-1
+	elif (latest_month<0):
+		return latest_month%12,current_year-1
+	elif (latest_month<=12):
+		return latest_month, current_year
+	elif(latest_month==24):
+		return 12, current_year+1
+	else:
+		return latest_month%12,current_year+1
+
+
+
+
+def main(change_month=0):
+
+	#fetching current datetime API using specified time zone
 	try:
 		date, month, year = get_current_date()
 	except:
 		print("Can not fetch current date and time")
 
+
+	#for non-zero argument
+	if change_month !=0:
+		#Validating the argument
+		change_month = int(float(change_month))
+		if change_month>12 or change_month< -12:
+			raise Exception(bcolors.RED+"Invalide argument! Please check the range for arg."+bcolors.END)
+
+		month, year = get_changed_month(change_month,month,year)
 	
+
+
+
+	#checking for leap year and printing the calendar
 	try:
 		check_leap_year(year)
 
@@ -117,6 +149,25 @@ def main():
 
 #calling main function
 if __name__ == '__main__':
-   
-    main()
 
+
+	parser = argparse.ArgumentParser(description="""This application computes a future calendar
+													(future month, for current date) or a past calendar (past month) of 
+													a given date. ( provided given date is present 
+													in that future/past month) """)
+	parser.add_argument('-m','--month', help='''a positive/negative/zero integer, it lies between -12 to 12 to fetch the past or 
+												future month of a current date.''', required=False)
+	args = vars(parser.parse_args())
+
+	if args['month'] == None :
+		print(bcolors.RED+"No command line argument specified. Search for --help."+bcolors.END)
+		try:
+			main()
+		except Exception as e:
+			print(e)
+	else:
+		try:
+			main(args['month'])
+
+		except Exception as e:
+			print(e)
