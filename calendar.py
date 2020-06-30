@@ -94,11 +94,11 @@ def get_current_date():
 
 def print_calendar(year,month,date):
 	"""
-	Function used to print the caledar for a given date.
+	Function used to print the calendar for a given date.
 
 	Args:
-		year (integer) - the value of year for which caledar has to be printed.
-		month (integer) - the value of month for which caledar has to be printed.
+		year (integer) - the value of year for which calendar has to be printed.
+		month (integer) - the value of month for which calendar has to be printed.
 		date (integer) - the value of date to highlight the current date.
 	
 	Returns:
