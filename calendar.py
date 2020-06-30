@@ -9,65 +9,6 @@ no_of_days = {1:31, 3:31, 4:30, 5:31, 6:30, 7:31, 8:31, 9:30, 10:31, 11:30, 12:3
 days_of_week = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
 
 
-
-def check_leap_year(year):
-	'''
-
-
-
-	'''
-
-	if (year%400 == 0):
-		no_of_days[2]=29
-	elif (year%100 == 0):
-		no_of_days[2]=28
-	elif (year%4 == 0):
-		no_of_days[2]=29
-	else:
-		no_of_days[2]=28 
-
-
-def get_current_date():
-	'''
-
-	'''
-
-	dtime = datetime.now(pytz.timezone('Asia/Kolkata'))
-	date = dtime.day
-	month = dtime.month
-	year = dtime.year	
-
-	return date, month, year
-
-
-def print_calendar(year,month,date):
-	start_pos = datetime(year,month,1).isoweekday()
-	start_pos%=7
-	start_space = start_pos%7
-	st = bcolors.CYAN+bcolors.BOLD+months_dict[month] +" "+str(year)+bcolors.END
-	print('{:^30}'.format(st))
-	#print('{0} {1}'.format(months_dict[month],year).center(20, ' '))
-	#print()	        
-	print(''.join(['{0:<3}'.format(bcolors.BLUE+w+bcolors.END+" ") for w in days_of_week]))
-
-	print('{0:<3}'.format('')*start_space, end="")
-	for day in range(1,no_of_days[month]+1):
-	        # Print day
-	        if(day==date):
-	        	print('{0:<3}'.format(bcolors.bg.violet+bcolors.BOLD+str(day)+bcolors.END),end=" ")
-	        	
-	        else:
-	        	print('{0:<3}'.format(day),end="")
-	        
-	        start_pos += 1
-	        if start_pos == 7:
-	            # If start_pos == 7 (Sunday) start new line
-	            print()
-	            start_pos = 0 # Reset counter
-
-
-	print()
-
 class bcolors:
 	class fg: 
 		black='\033[30m'
@@ -98,7 +39,113 @@ class bcolors:
 	END     = '\033[0m'
 
 
+
+
+
+
+
+
+def check_leap_year(year):
+	'''
+	It checks the leap year conditions on the given year
+	and update the no_of_days global dict to add the corresponding days for
+	the month of February.
+
+	Args : 
+
+		year (integer) - the value of year to be test as leap year
+
+	Return :
+		None
+
+
+	'''
+
+	if (year%400 == 0):
+		no_of_days[2]=29
+	elif (year%100 == 0):
+		no_of_days[2]=28
+	elif (year%4 == 0):
+		no_of_days[2]=29
+	else:
+		no_of_days[2]=28 
+
+
+def get_current_date():
+	'''
+	It is used to fetch the current datetime of specified zone.
+	Args:
+		None
+
+	Return :
+		date (integer) - returns the current date of specified zone.
+		month (integer)- returns month number of current date.
+		year (integer) - returns the value of current year.
+
+	'''
+
+	dtime = datetime.now(pytz.timezone('Asia/Kolkata'))
+	date = dtime.day
+	month = dtime.month
+	year = dtime.year	
+
+	return date, month, year
+
+
+def print_calendar(year,month,date):
+	"""
+	Function used to print the caledar for a given date.
+
+	Args:
+		year (integer) - the value of year for which caledar has to be printed.
+		month (integer) - the value of month for which caledar has to be printed.
+		date (integer) - the value of date to highlight the current date.
+	
+	Returns:
+		None
+	"""
+	start_pos = datetime(year,month,1).isoweekday()
+	start_pos%=7
+	start_space = start_pos%7
+	st = bcolors.CYAN+bcolors.BOLD+months_dict[month] +" "+str(year)+bcolors.END
+	print('{:^30}'.format(st))
+	#print('{0} {1}'.format(months_dict[month],year).center(20, ' '))
+	#print()	        
+	print(''.join(['{0:<3}'.format(bcolors.BLUE+w+bcolors.END+" ") for w in days_of_week]))
+
+	print('{0:<3}'.format('')*start_space, end="")
+	for day in range(1,no_of_days[month]+1):
+	        # Print day
+	        if(day==date):
+	        	print('{0:<3}'.format(bcolors.bg.violet+bcolors.BOLD+str(day)+bcolors.END),end=" ")
+	        	
+	        else:
+	        	print('{0:<3}'.format(day),end="")
+	        
+	        start_pos += 1
+	        if start_pos == 7:
+	            # If start_pos == 7 (Sunday) start new line
+	            print()
+	            start_pos = 0 # Reset counter
+
+
+	print()
+
+
 def get_changed_month(change_month,current_month,current_year):
+
+	"""
+	Function gives the latest year and month from the command line arg change.
+
+	Args:
+		change_month (integer) - the amount by which a past/future month is printed.
+		current_month (integer)- the value of current month of specified time zone.
+		current_year (integer) - the values of current year of specified time zone.
+
+	Returns :
+		latest_month (integer) - returns latest value of month after change.
+		latest_year (integer)  - returns latest value of year after change.
+	"""
 
 	latest_month = change_month+current_month
 
