@@ -9,7 +9,7 @@
 
 This tool requires following modules to be installed :
 
-- Python 2.7
+- Python 2.7 
 
 ### Installing
 1. Clone this repository using git clone as:
@@ -31,14 +31,16 @@ $ python calendar.py
 
 ~~~
 $ python calendar.py --help 
+or
+$ python calendar.py -h
 ~~~
 
-- Get one month before current month
+- Get a month before current month
 
 ```
 $ python calendar.py -m -1
 ```
-- Get two month after current month
+- Get second month after current month
 
 ```
 $ python calendar.py -m 2
